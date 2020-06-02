@@ -1,5 +1,5 @@
 /**
- *    Copyright ${license.git.copyrightYears} the original author or authors.
+ *    Copyright 2006-2020 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -50,8 +50,7 @@ public class ExampleGenerator extends AbstractJavaGenerator {
                 "Progress.6", table.toString())); //$NON-NLS-1$
         CommentGenerator commentGenerator = context.getCommentGenerator();
 
-        FullyQualifiedJavaType type = new FullyQualifiedJavaType(
-                introspectedTable.getExampleType());
+        FullyQualifiedJavaType type = new FullyQualifiedJavaType(introspectedTable.getExampleType());
         TopLevelClass topLevelClass = new TopLevelClass(type);
         topLevelClass.setVisibility(JavaVisibility.PUBLIC);
         commentGenerator.addJavaFileComment(topLevelClass);
@@ -79,15 +78,27 @@ public class ExampleGenerator extends AbstractJavaGenerator {
             String underlineToCamel = JavaBeansUtil.underlineToCamel(actualColumnName, false);
             method = new Method();
             method.setVisibility(JavaVisibility.PUBLIC);
-            method.setName("setOrderBy"+ underlineToCamel +"Desc"); //$NON-NLS-1$
-            method.addBodyLine("this.orderByClause = \""+actualColumnName +" desc\";"); //$NON-NLS-1$
+            method.setReturnType(type);
+            method.setName("setOrderBy" + underlineToCamel + "Desc"); //$NON-NLS-1$
+            method.addBodyLine("if(null == this.orderByClause||this.orderByClause.length()==0){");
+            method.addBodyLine("this.orderByClause = \"" + actualColumnName + " desc\";");
+            method.addBodyLine("}else{");
+            method.addBodyLine("this.orderByClause += \"," + actualColumnName + " desc\";");
+            method.addBodyLine("}");
+            method.addBodyLine("return this;");
             commentGenerator.addGeneralMethodComment(method, introspectedTable);
             topLevelClass.addMethod(method);
 
             method = new Method();
             method.setVisibility(JavaVisibility.PUBLIC);
-            method.setName("setOrderBy"+underlineToCamel+"Asc"); //$NON-NLS-1$
-            method.addBodyLine("this.orderByClause = \""+actualColumnName +" asc\";"); //$NON-NLS-1$
+            method.setReturnType(type);
+            method.setName("setOrderBy" + underlineToCamel + "Asc"); //$NON-NLS-1$
+            method.addBodyLine("if(null == this.orderByClause||this.orderByClause.length()==0){");
+            method.addBodyLine("this.orderByClause = \"" + actualColumnName + " asc\";");
+            method.addBodyLine("}else{");
+            method.addBodyLine("this.orderByClause += \"," + actualColumnName + " asc\";");
+            method.addBodyLine("}");
+            method.addBodyLine("return this;");
             commentGenerator.addGeneralMethodComment(method, introspectedTable);
             topLevelClass.addMethod(method);
         }

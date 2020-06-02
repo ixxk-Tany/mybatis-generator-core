@@ -1,5 +1,5 @@
 /**
- *    Copyright ${license.git.copyrightYears} the original author or authors.
+ *    Copyright 2006-2020 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -43,6 +43,7 @@ public class PaginationPlugin extends PluginAdapter {
      * 给对应的实体 实体添加 属性字段
      */
     private void addProperty(TopLevelClass topLevelClass, IntrospectedTable introspectedTable, String name, FullyQualifiedJavaType fullyQualifiedJavaType) {
+        FullyQualifiedJavaType type = new FullyQualifiedJavaType(introspectedTable.getExampleType());
         CommentGenerator commentGenerator = context.getCommentGenerator();
         Field field = new Field();
         field.setVisibility(JavaVisibility.PROTECTED);
@@ -55,9 +56,11 @@ public class PaginationPlugin extends PluginAdapter {
         String camel = Character.toUpperCase(c) + name.substring(1);
         Method method = new Method();
         method.setVisibility(JavaVisibility.PUBLIC);
+        method.setReturnType(type);
         method.setName("set" + camel);
         method.addParameter(new Parameter(fullyQualifiedJavaType, name));
         method.addBodyLine("this." + name + "=" + name + ";");
+        method.addBodyLine("return this;");
         commentGenerator.addGeneralMethodComment(method, introspectedTable);
         topLevelClass.addMethod(method);
         method = new Method();
