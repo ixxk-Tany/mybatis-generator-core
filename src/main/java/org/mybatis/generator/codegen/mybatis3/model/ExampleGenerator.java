@@ -80,9 +80,9 @@ public class ExampleGenerator extends AbstractJavaGenerator {
             method.setVisibility(JavaVisibility.PUBLIC);
             method.setReturnType(type);
             method.setName("setOrderBy" + underlineToCamel + "Desc"); //$NON-NLS-1$
-            method.addBodyLine("if(null == this.orderByClause||this.orderByClause.length()==0){");
+            method.addBodyLine("if (null == this.orderByClause || this.orderByClause.length() == 0) {");
             method.addBodyLine("this.orderByClause = \"" + actualColumnName + " desc\";");
-            method.addBodyLine("}else{");
+            method.addBodyLine("} else {");
             method.addBodyLine("this.orderByClause += \"," + actualColumnName + " desc\";");
             method.addBodyLine("}");
             method.addBodyLine("return this;");
@@ -93,9 +93,9 @@ public class ExampleGenerator extends AbstractJavaGenerator {
             method.setVisibility(JavaVisibility.PUBLIC);
             method.setReturnType(type);
             method.setName("setOrderBy" + underlineToCamel + "Asc"); //$NON-NLS-1$
-            method.addBodyLine("if(null == this.orderByClause||this.orderByClause.length()==0){");
+            method.addBodyLine("if (null == this.orderByClause || this.orderByClause.length() == 0) {");
             method.addBodyLine("this.orderByClause = \"" + actualColumnName + " asc\";");
-            method.addBodyLine("}else{");
+            method.addBodyLine("} else {");
             method.addBodyLine("this.orderByClause += \"," + actualColumnName + " asc\";");
             method.addBodyLine("}");
             method.addBodyLine("return this;");
